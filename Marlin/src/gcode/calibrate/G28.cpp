@@ -126,6 +126,10 @@
 
 #endif // QUICK_HOME
 
+#ifndef NOZZLE_PARK_XY_FEEDRATE // ppMod for correct parking then HOME_OFFSET used.
+  #define NOZZLE_PARK_XY_FEEDRATE 100
+#endif
+
 #if ENABLED(Z_SAFE_HOMING)
 
   inline void home_z_safely() {
@@ -154,7 +158,7 @@
 
       TERN_(SENSORLESS_HOMING, safe_delay(500)); // Short delay needed to settle
 
-      do_blocking_move_to_xy(destination);
+      do_blocking_move_to_xy(destination, NOZZLE_PARK_XY_FEEDRATE); // ppMod for correct parking then HOME_OFFSET used. In past was addresing to function with 0 mm/s speed 
       homeaxis(Z_AXIS);
     }
     else {
